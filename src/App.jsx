@@ -3,7 +3,7 @@ import "./Components/Headers/Header.css";
 import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import { Home } from "./Components/Home/Home";
 import { Header } from "./Components/Headers/Header";
-import { Cart } from "./Components/cart/cart";
+import { Cart } from "./Components/cart/Cart";
 import { PageNotFound } from "./Components/pageNotFound/pageNotFound";
 import { Wishlist } from "./Components/wishlist/wishlist";
 
