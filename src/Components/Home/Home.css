@@ -16,6 +16,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 .product-card img {
@@ -47,4 +48,20 @@
 
 .removecart-btn {
   background-color: rgb(255, 109, 56);
+}
+
+.wishlist-btn{
+  background-color: #1db3f9d8;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: white;
+}
+
+.wishlist-btn:hover{
+  background-color: #1db3f9;
 }

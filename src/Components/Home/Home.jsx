@@ -13,7 +13,7 @@ export const Home = () => {
         <h4>Featured Products</h4>
         <div className="d-flex flex-wrap gap-4 mt-5 justify-content-around">
           {product.map((product) => (
-            <Product product={product} />
+            <Product key={product.id} product={product}/>
           ))}
         </div>
       </div>

@@ -9,8 +9,12 @@ import { FaRegHeart } from "react-icons/fa6";
 import { CgMenuRightAlt } from "react-icons/cg";
 import { FiMenu } from "react-icons/fi";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { useSelector } from "react-redux";
 
-export const Header = ({ cart }) => {
+export const Header = () => {
+  const cartSelector = useSelector((state)=>{return state.cart})
+  const wishlistSelector = useSelector((state)=>{return state.wishlist})
+
   return (
     <>
       <div className="container-fluid top-strip d-flex justify-content-center align-items-center">
@@ -44,16 +48,17 @@ export const Header = ({ cart }) => {
                   <FaRegUser />
                 </Link>
               </div>
-              <div className="circle">
+              <div className="circle position-relative">
                 <Link to={"/wishlist"}>
                   <FaRegHeart />
                 </Link>
+                <span className="cart-count">{wishlistSelector.length}</span>
               </div>
               <div className="circle position-relative">
                 <Link to={"/cart"}>
                   <PiBagBold />
                 </Link>
-                <span className="cart-count">{cart.length}</span>
+                <span className="cart-count">{cartSelector.length}</span>
               </div>
             </div>
           </div>

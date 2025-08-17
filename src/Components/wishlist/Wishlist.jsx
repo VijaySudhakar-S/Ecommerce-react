@@ -1,28 +1,23 @@
 import React, { useEffect, useState} from "react";
-import "./Cart.css";
-import { removeItem } from "../../store/cartSliceReducer";
+import "../cart/Cart.css"
 import { useDispatch, useSelector } from "react-redux";
+import { removewishlist } from "../../store/wishlistSlice";
 
-export const Cart = () => {
+export const Wishlist = () => {
+
+  const wishlistProducts = useSelector((state)=>state.wishlist)
   const dispatch = useDispatch()
-  const cartProducts = useSelector((state)=>{return state.cart})
-  const [total, setTotal] = useState(0);
-
-  useEffect(() => {
-    setTotal(cartProducts.reduce((pre, curr) => pre + parseInt(curr.amt), 0));
-  }, [cartProducts]);
-
-  const removeCart = (product) =>{
-    dispatch(removeItem(product))
+  const removeWishlistItem = (product) =>{
+    dispatch(removewishlist(product))
   }
   return (
     <>
       <div className="my-5 container cart-container">
-        <h4> Your Cart</h4>
-        {cartProducts.length > 0 ? (
+        <h4> Your Wishlist</h4>
+        {wishlistProducts.length > 0 ? (
           <>
             <div>
-              {cartProducts.map((product) => (
+              {wishlistProducts.map((product) => (
                 <div key={product.id} className="cart-card d-flex justify-content-between align-items-center mt-4">
                   <div className="d-flex">
                     <div>
@@ -36,7 +31,7 @@ export const Cart = () => {
                   <div>
                     <button
                       className="removecart-btn me-3"
-                      onClick={() => removeCart(product)}
+                      onClick={() => removeWishlistItem(product)}
                     >
                       Remove Item
                     </button>
@@ -44,14 +39,9 @@ export const Cart = () => {
                 </div>
               ))}
             </div>
-            <div className="mt-4 text-end">
-              <h6 className="total-amt">
-                Total Amount : <span>₹ {total}</span>
-              </h6>
-            </div>
           </>
         ) : (
-          <div className="mt-4 empty-cart-con">Your Cart is Empty..</div>
+          <div className="mt-4 empty-cart-con">Your Wishlist is Empty..</div>
         )}
       </div>
     </>
