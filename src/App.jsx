@@ -1,15 +1,15 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { Home } from "./Components/Home/Home";
-import { Header } from "./Components/Headers/Header";
-import { Cart } from "./Components/Cart/Cart.jsx";
-import { PageNotFound } from "./Components/pageNotFound/PageNotFound";
-import { Wishlist } from "./Components/Wishlist/Wishlist";
-import Login from "./Components/Auth/Login";
-import Register from "./Components/Auth/Register";
-import Profile from "./Components/Profile/Profile";
-import ProtectedRoute from "./Components/ProtectedRoute.jsx"
-import ToastMessage from "./UiComponents/ToastMessage.jsx";
+import { Home } from "./components/Home/Home.jsx";
+import { Header } from "./components/Headers/Header.jsx";
+import { Cart } from "./components/Cart/Cart.jsx";
+import { PageNotFound } from "./components/pageNotFound/PageNotFound.jsx";
+import { Wishlist } from "./components/Wishlist/Wishlist.jsx";
+import Login from "./components/Auth/Login.jsx";
+import Register from "./components/Auth/Register.jsx";
+import Profile from "./components/Profile/Profile.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx"
+import ToastMessage from "./uiComponents/ToastMessage.jsx";
 
 function Layout() {
   const location = useLocation();
