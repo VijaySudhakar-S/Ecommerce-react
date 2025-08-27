@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Home } from "./Components/Home/Home";
 import { Header } from "./Components/Headers/Header";
-import { Cart } from "./Components/Cart/Cart";
+import { Cart } from "./Components/Cart/Cart.jsx";
 import { PageNotFound } from "./Components/pageNotFound/PageNotFound";
 import { Wishlist } from "./Components/Wishlist/Wishlist";
 import Login from "./Components/Auth/Login";
