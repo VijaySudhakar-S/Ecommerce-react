@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem } from "../../store/cartSliceReducer";
 import { addwishlist, removewishlist } from "../../store/wishlistSlice";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Product = ({ product }) => {
   const cart = useSelector((state) => state.cart);
@@ -13,24 +15,34 @@ export const Product = ({ product }) => {
   const isInWishlist = wishlist.some((item) => item.id === product.id);
 
   const addCart = (product) => {
-    if (!isInCart) dispatch(addItem(product));
+    if (!isInCart) {
+      dispatch(addItem(product));
+      toast.success("🛒 Added to Cart!");
+    }
   };
 
   const removeCart = (product) => {
     dispatch(removeItem(product));
+    toast.info("❌ Removed from Cart");
   };
 
   const addWishlistItem = (product) => {
-    if (!isInWishlist) dispatch(addwishlist(product));
+    if (!isInWishlist) {
+      dispatch(addwishlist(product));
+      toast.success("❤️ Added to Wishlist!");
+    }
   };
 
   const removeWishlistItem = (product) => {
     dispatch(removewishlist(product));
+    toast.info("💔 Removed from Wishlist");
   };
 
   return (
-    <div className="product-card">
+    <div className="product-card shadow-sm">
       <img src={product.pic} alt={product.name} />
+      
+      {/* Wishlist Icon */}
       {!isInWishlist ? (
         <button
           className="wishlist-btn"
@@ -40,7 +52,7 @@ export const Product = ({ product }) => {
         </button>
       ) : (
         <button
-          className="wishlist-btn"
+          className="wishlist-btn active"
           onClick={() => removeWishlistItem(product)}
         >
           <FaHeart />
@@ -48,7 +60,7 @@ export const Product = ({ product }) => {
       )}
 
       <h6 className="mt-3">{product.name}</h6>
-      <p>Price : ₹ {product.amt}</p>
+      <p>₹ {product.amt}</p>
 
       {isInCart ? (
         <button className="removecart-btn" onClick={() => removeCart(product)}>

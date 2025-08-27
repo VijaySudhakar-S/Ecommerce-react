@@ -1,0 +1,36 @@
+.notfound-container{
+    height: 70vh;
+}
+.notfound-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  max-width: 500px;
+}
+
+/* Custom button style */
+.allItems-btn {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  font-family: "Parkinsans", sans-serif;
+  background: linear-gradient(135deg, #1db2f9, #0e89c9);
+  color: #fff;
+  font-weight: 550;
+  padding: 10px 20px;
+  border-radius: 45px;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
+  text-decoration: none; /* for Link */
+}
+
+.allItems-btn:hover {
+  background: linear-gradient(135deg, #0e89c9, #1db2f9);
+  transform: translateY(-2px);
+}

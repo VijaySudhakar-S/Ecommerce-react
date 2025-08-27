@@ -1,135 +1,118 @@
+/* Header Styles */
 .header {
   width: 100%;
-  height: auto;
   background-color: #fff;
-  -webkit-box-shadow: 0px 3px 24px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 3px 24px 0px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 3px 24px 0px rgba(0, 0, 0, 0.3);
   z-index: 10000;
 }
+
 .top-strip {
   background-color: navy;
   color: #fff;
   padding: 8px;
   text-align: center;
 }
+
 .top-strip div {
   font-size: 15px;
   font-weight: 600;
-  margin-left: 10px;
 }
+
 .top-strip svg {
   font-size: 20px;
 }
+
 .navbar-con {
   position: sticky;
   top: 0px;
   z-index: 10;
 }
-.menu-btn button {
-  border: none;
-  background-color: transparent;
-}
-.menu-btn button svg {
-  font-size: 25px;
-}
+
+/* Logo */
 .logowrapper {
   width: 90px;
 }
+
 @media (max-width: 992px) {
   .logowrapper {
     width: 70px;
   }
 }
-.logowrapper img {
-  width: 100%;
-}
+
+/* Search Wrapper */
 .searchwrapper {
   border: 1px solid rgba(128, 128, 128, 0.3);
   border-radius: 25px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.8),
-    rgba(200, 200, 200, 0.2)
-  );
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(200, 200, 200, 0.2));
   padding: 0 20px;
-  width: 100%;
   height: 42px;
-  display: flex;
-  align-items: center;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
+
 .searchwrapper input {
   outline: none;
-  border: none;
-  width: 100%;
   background-color: transparent;
   font-size: 16px;
   color: #333;
 }
+
 .searchwrapper input::placeholder {
   color: rgba(116, 116, 116, 0.6);
   transition: 0.3s;
 }
+
 .searchwrapper:hover input::placeholder {
   color: rgba(116, 116, 116, 0.801);
 }
+
 .searchwrapper svg {
   font-size: 22px;
   color: #666;
   margin-left: 10px;
 }
+
 .searchwrapper:hover {
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
   border-color: rgba(128, 128, 128, 0.5);
 }
+
 .searchwrapper input:focus {
   color: #000;
 }
+
+/* Profile Cart Wrapper */
 .profilecartwrapper .circle {
   background-color: rgba(209, 209, 209, 0.121);
   border: 1px solid rgba(61, 61, 61, 0.121);
   padding: 10px;
   width: 40px;
   height: 40px;
-  margin-right: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border-radius: 50%;
   transition: 0.2s;
   cursor: pointer;
+  color: black;
 }
+
 .profilecartwrapper .circle:hover {
   background-color: #1db3f931;
   border: 1px solid #1db2f9;
 }
-.profilecartwrapper svg {
-  font-size: 17px;
-  color: black;
-  width: 100%;
-  transition: 0.1s;
-}
 
-.profilecartwrapper .cart-count {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  width: 20px;
-  height: 20px;
+.cart-count {
   font-size: 12px;
   font-weight: 700;
-  border-radius: 50%;
-  background-color: #1db2f9;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: #1db2f9 !important;
+  color: #fff !important;
+  min-width: 20px;
+  height: 20px;
 }
+
+/* All Items Container */
 .allitems-con {
   padding: 14px 0;
 }
+
 .allItems-btn {
   border: none;
   outline: none;
@@ -143,17 +126,15 @@
   border-radius: 45px;
   position: relative;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   transition: background 0.3s ease;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 .allItems-btn:hover {
   background: linear-gradient(135deg, #0e89c9, #1db2f9);
 }
+
 .allitems-box {
-  position: absolute;
   background: #fff;
   margin-top: 25px;
   padding: 10px;
@@ -164,29 +145,32 @@
   display: none;
   flex-direction: column;
 }
+
 .allItems-btn:focus + .allitems-box,
 .allitems-box:hover {
   display: flex;
 }
+
 .allitems-box a {
-  text-decoration: none;
   color: #333;
   font-family: "Parkinsans", sans-serif;
   padding: 10px 15px;
   border-radius: 5px;
 }
+
 .allitems-box a:hover {
   background: linear-gradient(135deg, #0e89c9, #1db2f9);
-  color: #fff;
+  color: #fff !important;
   font-weight: 500;
 }
+
 .nav-items {
   flex-grow: 1;
 }
+
 .nav-items a {
-  color: #000;
+  color: #000 !important;
   font-family: "Parkinsans", sans-serif;
-  text-decoration: none;
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 1.5px;
@@ -197,6 +181,57 @@
   border: 1px solid transparent;
   transition: 0.2s;
 }
+
 .nav-items a:hover {
-  color: #006898;
+  color: #006898 !important;
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.mobile-menu {
+  overflow-y: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .top-strip div {
+    font-size: 13px;
+  }
+  
+  .top-strip svg {
+    font-size: 18px;
+  }
+  
+  .profilecartwrapper .circle {
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+  }
+  
+  .cart-count {
+    font-size: 11px;
+    min-width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 576px) {
+  .top-strip div {
+    font-size: 12px;
+  }
+  
+  .profilecartwrapper .circle {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+  }
+  
+  .cart-count {
+    font-size: 10px;
+    min-width: 16px;
+    height: 16px;
+  }
 }
