@@ -9,9 +9,11 @@ export const Home = () => {
   return (
     <>
       <Slider />
-      <div className="product-container my-5 container text-center">
-        <h4>Featured Products</h4>
-        <div className="d-flex flex-wrap gap-4 mt-5 justify-content-around">
+      <div className="product-container my-5 container px-3">
+        <div className="text-center mb-4">
+          <h4>Featured Products</h4>
+        </div>
+        <div className="row g-3 justify-content-center">
           {product.map((product) => (
             <Product key={product.id} product={product}/>
           ))}

@@ -111,8 +111,8 @@ export const Header = () => {
       </header>
       
       {/* Search Popup */}
-      <div className={`search-popup ${showSearchPopup ? 'show' : ''}`}>
-        <div className="container-fluid px-3 py-4">
+      <div className={`search-popup shadow-lg ${showSearchPopup ? 'show' : ''}`}>
+        <div className="container px-3 py-4">
           <div className="search-popup-content">
             <div className="d-flex align-items-center">
               <div className="search-wrapper flex-grow-1 me-3">

@@ -5,6 +5,7 @@ import { Header } from "./Components/Headers/Header.jsx";
 import { Cart } from "./Components/cart/Cart.jsx";
 import { PageNotFound } from "./Components/pageNotFound/PageNotFound.jsx";
 import { Wishlist } from "./Components/wishlist/Wishlist.jsx";
+import { ProductDetail } from "./Components/ProductDetail/ProductDetail.jsx"; // Add this import
 import Login from "./Components/Auth/Login.jsx";
 import Register from "./Components/Auth/Register.jsx";
 import Profile from "./Components/Profile/Profile.jsx";
@@ -32,6 +33,7 @@ function Layout() {
             </ProtectedRoute>
           }
         />
+        <Route path="/product/:id" element={<ProductDetail />} /> {/* Add this route */}
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="*" element={<PageNotFound />} />
