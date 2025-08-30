@@ -6,166 +6,185 @@ import { GrSearch } from "react-icons/gr";
 import { FaRegUser } from "react-icons/fa6";
 import { PiBagBold } from "react-icons/pi";
 import { FaRegHeart } from "react-icons/fa6";
-import { CgMenuRightAlt } from "react-icons/cg";
-import { FiMenu } from "react-icons/fi";
-import { MdKeyboardArrowDown } from "react-icons/md";
+import { FiMenu, FiX } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import "./Header.css";
 
 export const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showSearchPopup, setShowSearchPopup] = useState(false);
   
-  const cartSelector = useSelector((state) => { return state.cart });
-  const wishlistSelector = useSelector((state) => { return state.wishlist });
+  const cartSelector = useSelector((state) => state.cart);
+  const wishlistSelector = useSelector((state) => state.wishlist);
 
   const toggleMobileMenu = () => {
     setShowMobileMenu(!showMobileMenu);
+    document.body.style.overflow = showMobileMenu ? 'auto' : 'hidden';
+  };
+
+  const toggleSearchPopup = () => {
+    setShowSearchPopup(!showSearchPopup);
   };
 
   return (
     <>
-      <div className="container-fluid top-strip d-flex justify-content-center align-items-center">
-        <FaShippingFast />
-        <div className="ms-2">Free shipping on orders above ₹499</div>
+      {/* Top Strip */}
+      <div className="top-strip">
+        <div className="container-fluid px-3">
+          <div className="d-flex justify-content-center align-items-center py-2">
+            <FaShippingFast className="me-2" />
+            <span>Free shipping on orders above ₹499</span>
+          </div>
+        </div>
       </div>
       
-      <div className="navbar-con header">
-        <div className="container">
-          <div className="row py-3 align-items-center">
+      {/* Main Header */}
+      <header className="main-header shadow-lg">
+        <div className="container px-3">
+          <nav className="d-flex align-items-center justify-content-between py-3">
             
-            <div className="col-4 d-lg-none d-flex align-items-center justify-content-start">
-              <button className="btn p-2" onClick={toggleMobileMenu}>
-                <CgMenuRightAlt size={24} />
+            {/* Left Section - Mobile Menu + Search */}
+            <div className="d-flex align-items-center">
+              <button 
+                className={`mobile-menu-toggle d-lg-none me-3 ${showMobileMenu ? 'active' : ''}`}
+                onClick={toggleMobileMenu}
+                aria-label="Toggle menu"
+              >
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
+              
+              <button 
+                className="search-toggle"
+                onClick={toggleSearchPopup}
+                aria-label="Search"
+              >
+                <GrSearch size={20} />
               </button>
             </div>
             
-            <div className="col-3 col-lg-4 d-flex align-items-center justify-content-center justify-content-lg-start">
-              <div className="logowrapper">
-                <Link to={"/"}>
-                  <img src={Logo} alt="Logo" className="img-fluid" />
-                </Link>
-              </div>
-            </div>
+            {/* Center - Logo */}
+            <Link to="/" className="logo-container">
+              <img src={Logo} alt="Logo" className="logo" />
+            </Link>
             
-            <div className="col-lg-4 d-none d-lg-flex align-items-center justify-content-center">
-              <div className="searchwrapper d-flex align-items-center justify-content-between w-100">
-                <input type="text" placeholder="Search for products..." className="flex-grow-1 border-0" />
-                <GrSearch />
-              </div>
-            </div>
-            
-            <div className="col-5 col-lg-4 d-flex profilecartwrapper align-items-center justify-content-end">
-            
-              <div className="d-none d-sm-flex me-2">
-                <Link to={"/profile"} className="circle d-flex align-items-center justify-content-center text-decoration-none">
-                  <FaRegUser size={16} />
-                </Link>
-              </div>
+            {/* Right Section - Actions */}
+            <div className="d-flex align-items-center gap-2">
+              <Link to="/profile" className="action-btn d-none d-md-flex">
+                <FaRegUser size={18} />
+              </Link>
               
-              <div className="position-relative me-2">
-                <Link to={"/wishlist"} className="circle d-flex align-items-center justify-content-center text-decoration-none">
-                  <FaRegHeart size={16} />
-                </Link>
+              <Link to="/wishlist" className="action-btn position-relative">
+                <FaRegHeart size={18} />
                 {wishlistSelector.length > 0 && (
-                  <span className="cart-count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                    {wishlistSelector.length}
-                  </span>
+                  <span className="item-count">{wishlistSelector.length}</span>
                 )}
-              </div>
+              </Link>
               
-              <div className="position-relative">
-                <Link to={"/cart"} className="circle d-flex align-items-center justify-content-center text-decoration-none">
-                  <PiBagBold size={16} />
-                </Link>
+              <Link to="/cart" className="action-btn position-relative">
+                <PiBagBold size={18} />
                 {cartSelector.length > 0 && (
-                  <span className="cart-count position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                    {cartSelector.length}
-                  </span>
+                  <span className="item-count">{cartSelector.length}</span>
                 )}
+              </Link>
+            </div>
+          </nav>
+        </div>
+        
+        {/* Navigation Menu (Desktop) */}
+        <div className="navigation-menu d-none d-lg-block border-top">
+          <div className="container-fluid px-3">
+            <div className="d-flex justify-content-center py-3">
+              <div className="nav-links d-flex gap-5">
+                <Link to="/">Home</Link>
+                <Link to="/all">All Products</Link>
+                <Link to="/tshirts">T-shirts</Link>
+                <Link to="/chocolates">Chocolates</Link>
+                <Link to="/frames">Frames</Link>
+                <Link to="/aboutus">About Us</Link>
+                <Link to="/contactus">Contact Us</Link>
               </div>
             </div>
           </div>
         </div>
-        
-        <div className="border-bottom"></div>
-        <div className="p-3 d-lg-none align-items-center justify-content-center">
-              <div className="searchwrapper d-flex align-items-center justify-content-between w-100">
-                <input type="text" placeholder="Search for products..." className="flex-grow-1 border-0" />
-                <GrSearch />
+      </header>
+      
+      {/* Search Popup */}
+      <div className={`search-popup ${showSearchPopup ? 'show' : ''}`}>
+        <div className="container-fluid px-3 py-4">
+          <div className="search-popup-content">
+            <div className="d-flex align-items-center">
+              <div className="search-wrapper flex-grow-1 me-3">
+                <input 
+                  type="text" 
+                  placeholder="Search for products..." 
+                  className="w-100 border-0 px-4 py-3"
+                  autoFocus
+                />
               </div>
-        </div>
-        <div className="container">
-          <div className="allitems-con d-none d-lg-flex align-items-center justify-content-between">
-            <div className="me-lg-3 me-xl-5 position-relative">
-              <button className="allItems-btn d-flex align-items-center justify-content-between">
-                <FiMenu />
-                <span className="mx-2">ALL CATEGORIES</span>
-                <MdKeyboardArrowDown />
+              <button 
+                className="btn btn-outline-secondary"
+                onClick={toggleSearchPopup}
+              >
+                Cancel
               </button>
-              <div className="allitems-box position-absolute">
-                <Link to={"/albums"} className="text-decoration-none">Albums</Link>
-                <Link to={"/chocolates"} className="text-decoration-none">Chocolates</Link>
-                <Link to={"/frames"} className="text-decoration-none">Frames</Link>
-                <Link to={"/keychain"} className="text-decoration-none">Key Chains</Link>
-                <Link to={"/lamps"} className="text-decoration-none">Lamps</Link>
-                <Link to={"/tshirts"} className="text-decoration-none">T-shirts</Link>
-                <Link to={"/toys"} className="text-decoration-none">Toys</Link>
-              </div>
-            </div>
-            <div className="nav-items d-flex justify-content-between flex-wrap">
-              <Link to={"/"} className="text-decoration-none">home</Link>
-              <Link to={"/all"} className="text-decoration-none">All</Link>
-              <Link to={"/tshirts"} className="text-decoration-none">T-shirts</Link>
-              <Link to={"/chocolates"} className="text-decoration-none">Chocolates</Link>
-              <Link to={"/frames"} className="text-decoration-none">Frames</Link>
-              <Link to={"/aboutus"} className="text-decoration-none">About Us</Link>
-              <Link to={"/contactus"} className="text-decoration-none">Contact Us</Link>
             </div>
           </div>
         </div>
-        
-        {/* Mobile Menu */}
-        {showMobileMenu && (
-          <div className="mobile-menu-overlay d-lg-none position-fixed top-0 start-0 w-100 h-100" style={{zIndex: 9999}}>
-            <div className="mobile-menu bg-white position-absolute top-0 start-0 h-100 shadow" style={{width: '280px'}}>
-              <div className="p-3 border-bottom">
-                <div className="d-flex justify-content-between align-items-center">
-                  <h5 className="mb-0">Menu</h5>
-                  <button className="btn p-1" onClick={toggleMobileMenu}>
-                    <span className="fs-4">&times;</span>
-                  </button>
-                </div>
-              </div>
-              <div className="p-3">
-                <div className="mb-3">
-                  <Link to={"/profile"} className="d-flex align-items-center text-decoration-none text-dark py-2">
-                    <FaRegUser className="me-3" size={16} />
-                    Profile
-                  </Link>
-                </div>
-                <hr />
-                <div className="mb-4">
-                  <h6 className="text-muted mb-3">Categories</h6>
-                  <Link to={"/albums"} className="d-block text-decoration-none text-dark py-2">Albums</Link>
-                  <Link to={"/chocolates"} className="d-block text-decoration-none text-dark py-2">Chocolates</Link>
-                  <Link to={"/frames"} className="d-block text-decoration-none text-dark py-2">Frames</Link>
-                  <Link to={"/keychain"} className="d-block text-decoration-none text-dark py-2">Key Chains</Link>
-                  <Link to={"/lamps"} className="d-block text-decoration-none text-dark py-2">Lamps</Link>
-                  <Link to={"/tshirts"} className="d-block text-decoration-none text-dark py-2">T-shirts</Link>
-                  <Link to={"/toys"} className="d-block text-decoration-none text-dark py-2">Toys</Link>
-                </div>
-                <hr />
-                <div>
-                  <h6 className="text-muted mb-3">Navigation</h6>
-                  <Link to={"/"} className="d-block text-decoration-none text-dark py-2">Home</Link>
-                  <Link to={"/all"} className="d-block text-decoration-none text-dark py-2">All Products</Link>
-                  <Link to={"/aboutus"} className="d-block text-decoration-none text-dark py-2">About Us</Link>
-                  <Link to={"/contactus"} className="d-block text-decoration-none text-dark py-2">Contact Us</Link>
-                </div>
-              </div>
+      </div>
+      
+      {/* Mobile Menu Overlay */}
+      <div className={`mobile-overlay ${showMobileMenu ? 'show' : ''}`} onClick={toggleMobileMenu}>
+        <div className={`mobile-menu ${showMobileMenu ? 'show' : ''}`} onClick={e => e.stopPropagation()}>
+          
+          {/* Mobile Menu Header */}
+          <div className="mobile-menu-header d-flex justify-content-between align-items-center p-4 border-bottom">
+            <h5 className="mb-0 fw-bold">Menu</h5>
+            <button 
+              className="btn p-0"
+              onClick={toggleMobileMenu}
+              aria-label="Close menu"
+            >
+              <FiX size={24} />
+            </button>
+          </div>
+          
+          {/* Mobile Menu Content */}
+          <div className="mobile-menu-content p-4">
+            
+            {/* Profile Link */}
+            <Link to="/profile" className="mobile-link d-flex align-items-center py-3 text-decoration-none" onClick={toggleMobileMenu}>
+              <FaRegUser className="me-3" />
+              Profile
+            </Link>
+            
+            <hr className="my-3" />
+            
+            {/* Categories */}
+            <div className="mb-4">
+              <h6 className="section-title text-muted mb-3">Categories</h6>
+              <Link to="/albums" className="mobile-link d-block py-2 text-decoration-none" onClick={toggleMobileMenu}>Albums</Link>
+              <Link to="/chocolates" className="mobile-link d-block py-2 text-decoration-none" onClick={toggleMobileMenu}>Chocolates</Link>
+              <Link to="/frames" className="mobile-link d-block py-2 text-decoration-none" onClick={toggleMobileMenu}>Frames</Link>
+              <Link to="/keychain" className="mobile-link d-block py-2 text-decoration-none" onClick={toggleMobileMenu}>Key Chains</Link>
+              <Link to="/lamps" className="mobile-link d-block py-2 text-decoration-none" onClick={toggleMobileMenu}>Lamps</Link>
+              <Link to="/tshirts" className="mobile-link d-block py-2 text-decoration-none" onClick={toggleMobileMenu}>T-shirts</Link>
+              <Link to="/toys" className="mobile-link d-block py-2 text-decoration-none" onClick={toggleMobileMenu}>Toys</Link>
+            </div>
+            
+            <hr className="my-3" />
+            
+            {/* Navigation */}
+            <div>
+              <h6 className="section-title text-muted mb-3">Navigation</h6>
+              <Link to="/" className="mobile-link d-block py-2 text-decoration-none" onClick={toggleMobileMenu}>Home</Link>
+              <Link to="/all" className="mobile-link d-block py-2 text-decoration-none" onClick={toggleMobileMenu}>All Products</Link>
+              <Link to="/aboutus" className="mobile-link d-block py-2 text-decoration-none" onClick={toggleMobileMenu}>About Us</Link>
+              <Link to="/contactus" className="mobile-link d-block py-2 text-decoration-none" onClick={toggleMobileMenu}>Contact Us</Link>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </>
   );

@@ -2,6 +2,8 @@ import React, { useEffect, useState} from "react";
 import "./Cart.css";
 import { removeItem } from "../../store/cartSliceReducer";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Cart = () => {
   const dispatch = useDispatch()
@@ -14,6 +16,7 @@ export const Cart = () => {
 
   const removeCart = (product) =>{
     dispatch(removeItem(product))
+    toast.info("Removed from Cart");
   }
   return (
     <>
