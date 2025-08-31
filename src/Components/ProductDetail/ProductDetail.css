@@ -432,11 +432,5 @@
     align-items: flex-start;
     gap: 10px;
   }
-  
-  .price-section {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-  }
 
 }

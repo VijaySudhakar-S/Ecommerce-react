@@ -12,6 +12,7 @@ import Profile from "./Components/Profile/Profile.jsx";
 import ProtectedRoute from "./Components/ProtectedRoute.jsx"
 import ToastMessage from "./UiComponents/ToastMessage.jsx";
 import VerifyOTP from "./Components/Auth/VerifyOTP.jsx";
+import Footer from "./Components/Footer/Footer.jsx";
 
 function Layout() {
   const location = useLocation();
@@ -33,6 +34,7 @@ function Layout() {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      <Footer />
       <ToastMessage />
     </>
   );
