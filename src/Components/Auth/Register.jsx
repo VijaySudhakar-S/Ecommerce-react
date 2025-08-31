@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../Context/AuthContext";
+import Spinner from "../../UiComponents/Spinner/Spinner";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Auth.css";
@@ -15,10 +16,10 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
-
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -29,22 +30,20 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (formData.password.length < 6 || formData.password.length > 20) {
-      setError("Password must be between 6 and 20 characters");
-      return;
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
     setError("");
 
-    const res = await registerUser(formData);
-    if (res) {
-      navigate("/profile");
+    if (formData.password !== formData.confirmPassword) {
+      return setError("Passwords do not match");
+    }
+
+    setIsLoading(true);
+    const result = await registerUser(formData);
+    setIsLoading(false);
+
+    if (result.success) {
+      navigate("/verify-otp", { state: { email: result.email } });
+    } else {
+      setError(result.message || "Registration failed. Please try again.");
     }
   };
 
@@ -112,8 +111,8 @@ const Register = () => {
             </span>
           </div>
 
-          <button type="submit" className="allItems-btn w-100">
-            Register
+          <button type="submit" className="allItems-btn w-100" disabled={isLoading}>
+            {isLoading ? <Spinner /> : "Register"}
           </button>
         </form>
 

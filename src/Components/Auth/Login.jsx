@@ -1,23 +1,36 @@
 import { useAuth } from "../../Context/AuthContext";
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import Spinner from "../../UiComponents/Spinner/Spinner";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Auth.css";
 
 const Login = () => {
   const { loginUser } = useAuth();
   const [form, setForm] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await loginUser(form);
+    setError("");
 
-    if (result) {
+    setIsLoading(true);
+    const result = await loginUser(form);
+    setIsLoading(false);
+
+    if (result.success) {
       const redirectPath = location.state?.from?.pathname || "/profile";
       navigate(redirectPath, { replace: true });
+    } else {
+      if (result.needsVerification) {
+        navigate("/verify-otp", { state: { email: result.email } });
+      } else {
+        setError(result.message || "Invalid credentials");
+      }
     }
   };
 
@@ -25,7 +38,8 @@ const Login = () => {
     <div className="auth-container">
       <div className="auth-card animate-slide">
         <h2 className="auth-title">Welcome Back</h2>
-        
+        {error && <div className="alert alert-danger">{error}</div>}
+
         <form onSubmit={handleSubmit} className="auth-form">
           <input
             type="email"
@@ -51,7 +65,9 @@ const Login = () => {
             </span>
           </div>
 
-          <button type="submit" className="allItems-btn w-100">Login</button>
+          <button type="submit" className="allItems-btn w-100" disabled={isLoading}>
+            {isLoading ? <Spinner /> : "Login"}
+          </button>
         </form>
 
         <p className="auth-footer">
