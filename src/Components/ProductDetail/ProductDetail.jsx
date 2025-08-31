@@ -125,8 +125,8 @@ export const ProductDetail = () => {
       <div className="container px-3">
         <div className="row g-4">
           {/* Product Images */}
-          <div className="col-lg-6">
-            <div className="product-images-section">
+          <div className="col-lg-6 ">
+            <div className="product-images-section mx-auto">
               {/* Main Image */}
               <div className="main-image-container">
                 <img 
@@ -158,7 +158,7 @@ export const ProductDetail = () => {
           </div>
 
           {/* Product Info */}
-          <div className="col-lg-6">
+          <div className="col-lg-6 p-2 p-lg-0">
             <div className="product-info-section">
               <h1 className="product-title-dt">{product.name}</h1>
               
