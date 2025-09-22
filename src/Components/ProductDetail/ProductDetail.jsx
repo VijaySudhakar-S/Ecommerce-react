@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem } from "../../store/cartSliceReducer";
 import { addwishlist, removewishlist } from "../../store/wishlistSlice";
+import api from "../../api"
 import {
   FaRegHeart,
   FaHeart,
@@ -38,11 +39,11 @@ export const ProductDetail = () => {
 
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const res = await api.get(`/products/${id}`);
         setProduct(res.data);
 
         // fetch related products
-        const allRes = await axios.get("http://localhost:5000/api/products");
+        const allRes = await api.get("/products");
         const related = allRes.data
           .filter((item) => item._id !== id)
           .slice(0, 4);
@@ -52,6 +53,7 @@ export const ProductDetail = () => {
         toast.error("Failed to load product");
       }
     };
+
 
     fetchProduct();
   }, [id]);

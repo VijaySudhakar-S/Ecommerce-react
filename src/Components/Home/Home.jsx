@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import api from "../../api";
 import "./Home.css";
 import { Slider } from "./Slider";
 import { Product } from "../Product/Product";
@@ -11,12 +12,8 @@ export const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/products");
-        if (!res.ok) {
-          throw new Error("Failed to fetch products");
-        }
-        const data = await res.json();
-        setProducts(data);
+        const res = await api.get("/products");
+        setProducts(res.data);
       } catch (error) {
         console.error("Failed to load products:", error);
       } finally {
@@ -26,6 +23,7 @@ export const Home = () => {
 
     fetchProducts();
   }, []);
+
 
   return (
     <>
