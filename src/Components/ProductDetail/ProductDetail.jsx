@@ -3,24 +3,21 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem } from "../../store/cartSliceReducer";
 import { addwishlist, removewishlist } from "../../store/wishlistSlice";
-import { 
-  FaRegHeart, 
-  FaHeart, 
-  FaShoppingCart, 
-  FaTrash, 
-  FaStar, 
+import {
+  FaRegHeart,
+  FaHeart,
+  FaShoppingCart,
+  FaTrash,
+  FaStar,
   FaStarHalfAlt,
   FaRegStar,
   FaArrowLeft,
   FaShare,
   FaPlus,
   FaMinus,
-  FaShippingFast,
-  FaUndo,
-  FaShieldAlt
 } from "react-icons/fa";
 import { toast } from "react-toastify";
-import data from "../../../DB.json";
+import axios from "axios";
 import "./ProductDetail.css";
 import { Product } from "../Product/Product";
 
@@ -30,19 +27,33 @@ export const ProductDetail = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const wishlist = useSelector((state) => state.wishlist);
-  
+
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
   const [relatedProducts, setRelatedProducts] = useState([]);
 
   useEffect(() => {
-    const foundProduct = data.find(item => item.id === parseInt(id));
-    if (foundProduct) {
-      setProduct(foundProduct);
-      const related = data.filter(item => item.id !== parseInt(id)).slice(0, 4);
-      setRelatedProducts(related);
-    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    const fetchProduct = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/products/${id}`);
+        setProduct(res.data);
+
+        // fetch related products
+        const allRes = await axios.get("http://localhost:5000/api/products");
+        const related = allRes.data
+          .filter((item) => item._id !== id)
+          .slice(0, 4);
+        setRelatedProducts(related);
+      } catch (err) {
+        console.error("Error fetching product:", err);
+        toast.error("Failed to load product");
+      }
+    };
+
+    fetchProduct();
   }, [id]);
 
   if (!product) {
@@ -55,14 +66,11 @@ export const ProductDetail = () => {
     );
   }
 
-  const isInCart = cart.some((item) => item.id === product.id);
-  const isInWishlist = wishlist.some((item) => item.id === product.id);
+  const isInCart = cart.some((item) => item._id === product._id);
+  const isInWishlist = wishlist.some((item) => item._id === product._id);
 
-  const productImages = [
-    product.pic,
-    product.pic,
-    product.pic
-  ];
+  // merge main image + extra images
+  const productImages = [product.pic, ...(product.images || [])];
 
   const handleAddToCart = () => {
     if (!isInCart) {
@@ -90,7 +98,7 @@ export const ProductDetail = () => {
     const stars = [];
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
-    
+
     for (let i = 0; i < fullStars; i++) {
       stars.push(<FaStar key={i} className="star filled" />);
     }
@@ -110,7 +118,7 @@ export const ProductDetail = () => {
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <button className="btn-link" onClick={() => navigate('/')}>
+              <button className="btn-link" onClick={() => navigate("/")}>
                 <FaArrowLeft className="me-2" />
                 Back to Products
               </button>
@@ -127,27 +135,26 @@ export const ProductDetail = () => {
           {/* Product Images */}
           <div className="col-lg-6 ">
             <div className="product-images-section mx-auto">
-              {/* Main Image */}
               <div className="main-image-container">
-                <img 
-                  src={productImages[selectedImage]} 
+                <img
+                  src={productImages[selectedImage]}
                   alt={product.name}
                   className="main-product-image"
                 />
-                <button 
+                <button
                   className="share-btn"
                   onClick={() => toast.info("Share")}
                 >
                   <FaShare />
                 </button>
               </div>
-              
-              {/* Thumbnail Images */}
               <div className="thumbnail-container">
                 {productImages.map((image, index) => (
                   <button
                     key={index}
-                    className={`thumbnail ${selectedImage === index ? 'active' : ''}`}
+                    className={`thumbnail ${
+                      selectedImage === index ? "active" : ""
+                    }`}
                     onClick={() => setSelectedImage(index)}
                   >
                     <img src={image} alt={`${product.name} ${index + 1}`} />
@@ -161,38 +168,56 @@ export const ProductDetail = () => {
           <div className="col-lg-6 p-2 p-lg-0">
             <div className="product-info-section">
               <h1 className="product-title-dt">{product.name}</h1>
-              
+
               {/* Rating */}
               <div className="rating-section">
-                <div className="stars">
-                  {renderStars(4.5)}
-                </div>
-                <span className="rating-text">(4.5) • 128 reviews</span>
+                <div className="stars">{renderStars(product.rating || 0)}</div>
+                <span className="rating-text">
+                  ({product.rating || 0}) • {product.reviewsCount || 0} reviews
+                </span>
+              </div>
+
+              {/* Category */}
+              <div className="mb-2">
+                <strong>Category:</strong> {product.category}
+              </div>
+
+              {/* Stock */}
+              <div className="mb-2">
+                <strong>Stock:</strong>{" "}
+                {product.stock > 0 ? (
+                  product.stock < 10 ? (
+                    <span className="text-danger">
+                      Only {product.stock} left in stock!
+                    </span>
+                  ) : (
+                    <span className="text-success">{product.stock} available</span>
+                  )
+                ) : (
+                  <span className="text-danger">Out of stock</span>
+                )}
               </div>
 
               {/* Price */}
               <div className="price-section">
                 <span className="current-price">₹ {product.amt}</span>
-                <span className="original-price">₹ {Math.floor(product.amt * 1.3)}</span>
+                <span className="original-price">
+                  ₹ {Math.floor(product.amt * 1.3)}
+                </span>
                 <span className="discount">23% OFF</span>
               </div>
 
               {/* Description */}
               <div className="description-section">
                 <h3>Product Description</h3>
-                <p>
-                  Premium quality {product.name.toLowerCase()} crafted with attention to detail. 
-                  Perfect for gifting or personal use. Made with high-quality materials that ensure 
-                  durability and style. This product combines functionality with aesthetic appeal, 
-                  making it an excellent choice for modern lifestyles.
-                </p>
+                <p>{product.description}</p>
               </div>
 
               {/* Quantity Selector */}
               <div className="quantity-section">
                 <label className="quantity-label">Quantity:</label>
                 <div className="quantity-controls">
-                  <button 
+                  <button
                     className="quantity-btn"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1}
@@ -200,9 +225,10 @@ export const ProductDetail = () => {
                     <FaMinus />
                   </button>
                   <span className="quantity-display">{quantity}</span>
-                  <button 
+                  <button
                     className="quantity-btn"
                     onClick={() => setQuantity(quantity + 1)}
+                    disabled={product.stock <= quantity}
                   >
                     <FaPlus />
                   </button>
@@ -212,7 +238,7 @@ export const ProductDetail = () => {
               {/* Action Buttons */}
               <div className="action-buttons">
                 {isInCart ? (
-                  <button 
+                  <button
                     className="btn btn-danger btn-lg me-3"
                     onClick={handleRemoveFromCart}
                   >
@@ -220,47 +246,29 @@ export const ProductDetail = () => {
                     Remove from Cart
                   </button>
                 ) : (
-                  <button 
+                  <button
                     className="btn btn-primary btn-lg me-3"
                     onClick={handleAddToCart}
+                    disabled={product.stock === 0}
                   >
                     <FaShoppingCart className="me-2" />
                     Add to Cart
                   </button>
                 )}
-                
-                <button 
-                  className={`btn btn-outline-danger btn-lg ${isInWishlist ? 'active' : ''}`}
+
+                <button
+                  className={`btn btn-outline-danger btn-lg ${
+                    isInWishlist ? "active" : ""
+                  }`}
                   onClick={handleWishlist}
                 >
-                  {isInWishlist ? <FaHeart className="me-2" /> : <FaRegHeart className="me-2" />}
-                  {isInWishlist ? 'Wishlisted' : 'Add to Wishlist'}
+                  {isInWishlist ? (
+                    <FaHeart className="me-2" />
+                  ) : (
+                    <FaRegHeart className="me-2" />
+                  )}
+                  {isInWishlist ? "Wishlisted" : "Add to Wishlist"}
                 </button>
-              </div>
-
-              {/* Features */}
-              <div className="features-section">
-                <div className="feature-item">
-                  <FaShippingFast className="feature-icon" />
-                  <div>
-                    <strong>Free Shipping</strong>
-                    <small>On orders above ₹500</small>
-                  </div>
-                </div>
-                <div className="feature-item">
-                  <FaUndo className="feature-icon" />
-                  <div>
-                    <strong>Easy Returns</strong>
-                    <small>7 days return policy</small>
-                  </div>
-                </div>
-                <div className="feature-item">
-                  <FaShieldAlt className="feature-icon" />
-                  <div>
-                    <strong>Secure Payment</strong>
-                    <small>100% secure transactions</small>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -271,7 +279,7 @@ export const ProductDetail = () => {
           <h2 className="section-title-dt py-3 py-lg-5">You might also like</h2>
           <div className="row g-3">
             {relatedProducts.map((relatedProduct) => (
-              <Product key={relatedProduct.id} product={relatedProduct} />
+              <Product key={relatedProduct._id} product={relatedProduct} />
             ))}
           </div>
         </div>

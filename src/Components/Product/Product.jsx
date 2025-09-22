@@ -1,10 +1,19 @@
 import React from "react";
 import "./Product.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom"; // Add this import
+import { useNavigate } from "react-router-dom";
 import { addItem, removeItem } from "../../store/cartSliceReducer";
 import { addwishlist, removewishlist } from "../../store/wishlistSlice";
-import { FaRegHeart, FaHeart, FaShoppingCart, FaTrash, FaEye } from "react-icons/fa";
+import { 
+  FaRegHeart, 
+  FaHeart, 
+  FaShoppingCart, 
+  FaTrash, 
+  FaEye, 
+  FaStar, 
+  FaStarHalfAlt, 
+  FaRegStar 
+} from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -14,8 +23,8 @@ export const Product = ({ product }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isInCart = cart.some((item) => item.id === product.id);
-  const isInWishlist = wishlist.some((item) => item.id === product.id);
+  const isInCart = cart.some((item) => item._id === product._id);
+  const isInWishlist = wishlist.some((item) => item._id === product._id);
 
   const addCart = (e) => {
     e.stopPropagation();
@@ -46,12 +55,31 @@ export const Product = ({ product }) => {
   };
 
   const handleProductClick = () => {
-    navigate(`/product/${product.id}`);
+    navigate(`/product/${product._id}`);
   };
 
   const handleViewDetails = (e) => {
     e.stopPropagation();
-    navigate(`/product/${product.id}`);
+    navigate(`/product/${product._id}`);
+  };
+
+  // ⭐ Render stars
+  const renderStars = (rating) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={`star-${i}`} className="star filled" />);
+    }
+    if (hasHalfStar) {
+      stars.push(<FaStarHalfAlt key="half" className="star filled" />);
+    }
+    const remainingStars = 5 - Math.ceil(rating);
+    for (let i = 0; i < remainingStars; i++) {
+      stars.push(<FaRegStar key={`empty-${i}`} className="star" />);
+    }
+    return stars;
   };
 
   return (
@@ -86,6 +114,14 @@ export const Product = ({ product }) => {
         <div className="product-info d-flex flex-column">
           <h5 className="product-title">{product.name}</h5>
           <div className="product-price">₹ {product.amt}</div>
+
+          {/* Rating */}
+          <div className="rating-section d-flex align-items-center mb-2">
+            <div className="stars">{renderStars(product.rating || 0)}</div>
+            <span className="rating-text ms-2">
+              ({product.reviewsCount || 0})
+            </span>
+          </div>
           
           {/* Cart Button */}
           {isInCart ? (
@@ -109,4 +145,4 @@ export const Product = ({ product }) => {
       </div>
     </div>
   );
-};  
+};

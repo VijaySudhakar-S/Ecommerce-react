@@ -66,7 +66,7 @@ export const Header = () => {
             
             {/* Center - Logo */}
             <Link to="/" className="logo-container">
-              <img src={Logo} alt="Logo" className="logo" />
+              <img src={Logo} alt="Logo" className="logo m-auto" />
             </Link>
             
             {/* Right Section - Actions */}
