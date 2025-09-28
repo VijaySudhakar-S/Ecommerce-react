@@ -23,8 +23,8 @@ export const Product = ({ product }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isInCart = cart.some((item) => item._id === product._id);
-  const isInWishlist = wishlist.some((item) => item._id === product._id);
+  const isInCart = cart.some((item) => item?._id === product?._id);
+  const isInWishlist = wishlist.some((item) => item?._id === product?._id);
 
   const addCart = (e) => {
     e.stopPropagation();
@@ -40,7 +40,7 @@ export const Product = ({ product }) => {
     toast.info("Removed from Cart");
   };
 
-  const addWishlistItem = (e) => {
+  const addWishlistItem = (e,product) => {
     e.stopPropagation();
     if (!isInWishlist) {
       dispatch(addwishlist(product));
@@ -48,7 +48,7 @@ export const Product = ({ product }) => {
     }
   };
 
-  const removeWishlistItem = (e) => {
+  const removeWishlistItem = (e,product) => {
     e.stopPropagation(); 
     dispatch(removewishlist(product));
     toast.info("Removed from Wishlist");
@@ -95,7 +95,7 @@ export const Product = ({ product }) => {
           {/* Wishlist Button */}
           <button
             className={`wishlist-btn ${isInWishlist ? 'active' : ''}`}
-            onClick={(e) => isInWishlist ? removeWishlistItem(e) : addWishlistItem(e)}
+            onClick={(e) => isInWishlist ? removeWishlistItem(e,product) : addWishlistItem(e,product)}
             aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
           >
             {isInWishlist ? <FaHeart /> : <FaRegHeart />}

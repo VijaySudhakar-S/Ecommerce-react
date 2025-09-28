@@ -34,7 +34,7 @@ export const Home = () => {
         </div>
         <div className="row g-3 justify-content-center">
           {isLoading
-            ? Array.from({ length: 8 }).map((_, index) => (
+            ? Array.from({ length: 4 }).map((_, index) => (
                 <ProductSkeleton key={index} />
               ))
             : products.map((product) => (

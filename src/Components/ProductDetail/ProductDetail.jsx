@@ -277,7 +277,7 @@ export const ProductDetail = () => {
         </div>
 
         {/* Related Products */}
-        <div className="related-products-section mt-5">
+        <div className="related-products-section mt-5 ">
           <h2 className="section-title-dt py-3 py-lg-5">You might also like</h2>
           <div className="row g-3">
             {relatedProducts.map((relatedProduct) => (
